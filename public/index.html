@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<link rel="stylesheet" type="text/css" href="cdn\bootstrap.min.css" />
+  <script type="text/javascript" src="cdn\jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="cdn\bootstrap.min.js"></script>
+	<script type="text/javascript" src="cdn\angular.min.js"></script>
+	<script type="text/javascript" src="cdn\angular-route.min.js"></script>
+	<script type="text/javascript">
+		var app = angular.module("app" , ["ngRoute"]);
+
+	angular.module("app").controller("HomeController" , function($http){
+        var vm = this;
+        vm.users =   [];
+
+        vm.detailedUser;
+
+        vm.showDetails = function(user){
+        	vm.detailedUser = user;
+        	vm.detailed = true;
+        };
+
+        vm.getUsers = function(){
+          $http.get("/api/users").then(function(response){
+          	vm.users = response.data;
+          });
+        };
+        vm.getUsers();
+
+        vm.updateUser = function(user){
+        	if(user){
+        		$http.put("/api/users" , user).then(function(response){
+                console.log("updated user");
+                vm.getUsers();
+        		});
+        	}
+        };
+
+
+        vm.removeUser = function(user){
+        	console.log(user);
+           if(user){
+           	$http.delete("/api/users/"+user._id).then(function(response){
+           		vm.getUsers();
+           	});
+           }
+        };
+
+         vm.addUser = function(user){
+           if(user && user.name && user.age){
+           $http.post("/api/users" , user).then(function(response){
+               vm.getUsers();
+               vm.user = "";
+               vm.adduser = false;
+           }); 
+         }
+         else{
+
+         }
+       }
+        return true;
+	});
+
+	angular.module("app").config(function($routeProvider){
+		$routeProvider.when("/" , {
+          controller: "HomeController",
+          controllerAs: "vm",
+          templateUrl: "./home.html" 
+		});
+		$routeProvider.otherwise("/");
+
+	});
+
+	</script>
+	<title> Mean stack end to end</title>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div ng-view></div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
