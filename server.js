@@ -9,7 +9,9 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true }));
 
-var db =  "mongodb://localhost:27017/mean_end_to_end";
+//var db =  "mongodb://localhost:27017/mean_end_to_end";
+var db =  "mongodb://prameyy:prameychari@14@ds229648.mlab.com:29648/my_db";
+
 
 mongose.connect(db , function(err , response){
   if(err){
