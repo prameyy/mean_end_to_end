@@ -3,6 +3,7 @@ var express = require("express");
 var mongose = require("mongoose");
 var bodyParser = require("body-parser");
 var morgan = require("morgan");
+var port = process.env.PORT || 3000; 
 
 var app = express();
 
@@ -10,7 +11,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true }));
 
 //var db =  "mongodb://localhost:27017/mean_end_to_end";
-var db =  "mongodb://prameyy:prameychari@14@ds229648.mlab.com:29648/my_db";
+var db =  "mongodb://prameyy:prameyy@ds229648.mlab.com:29648/my_db";
 
 
 mongose.connect(db , function(err , response){
@@ -94,6 +95,6 @@ app.use(morgan("dev"));
 
 app.use(express.static(__dirname + "/public"));
 
-app.listen(3000 , function(){
-	console.log("listeing on port .. 3000");
+app.listen(port , function(){
+	console.log("listeing on port .. " + port);
 });
